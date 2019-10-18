@@ -15,6 +15,7 @@ class Buildetwork(object):
     def __init__(self):
         self.my_filetypes = [('Excel File', 'xlsx'), ('Excel file', 'xlx')]
         self.sheet_bridge_domain = 'bridge_domain'
+        self.sheet_bd_subnet = 'bd_subnet'
 
 
 
@@ -40,6 +41,7 @@ class Buildetwork(object):
         # Bridge SpreadSheet
         excel_file = Buildetwork().import_excelfile()
         bridge_domain_sheet = pd.read_excel(excel_file,sheet_name=self.sheet_bridge_domain)
+        bd_subnet_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_bd_subnet)
         set_of_tenants = set()
 
         for index, row in bridge_domain_sheet.iterrows():
@@ -67,15 +69,21 @@ class Buildetwork(object):
                     fvRsBDToNdP = SubElement(fvBD,'fvRsBDToNdP',{'tnNdIfPolName':''})
                     fvRsCtx = SubElement(fvBD,'fvRsCtx', {'tnFvCtxName':row['vrf']})
                     fvRsIgmpsn = SubElement(fvBD,'fvRsIgmpsn',{'tnIgmpSnoopPolName':''})
-
-
-
+                    fvRsBdToEpRet = SubElement(fvBD,'fvRsBdToEpRet',{'resolveAct':'resolve',
+                    'tnFvEpRetPolName':''})
+                    for index, row_ip in bd_subnet_sheet.iterrows():
+                        if row_ip['bridge_domain'] == row['name']:
+                            fvSubnet = SubElement(fvBD, 'fvSubnet', {'ctrl': '','descr':row_ip['description'],
+                                                                     'ip':row_ip['bd_subnet'],'preferred':'no',
+                                                                     'scope':'public','virtual':'no'})
 
 
 
             print(Buildetwork().prettify(root))
+            return root
 
-
+    def generate_xml_files(self):
+        pass
 
 
 Buildetwork().create_bridge_domain()
