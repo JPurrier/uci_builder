@@ -1,13 +1,9 @@
-import tkinter as tk
-from tkinter import filedialog
-import os, sys
 import pandas as pd
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 import datetime
 from xml.dom import minidom
 from xml.etree import ElementTree
-
-root = tk.Tk()
+from excelimport import ExcelImporter
 
 
 class Buildetwork(object):
@@ -17,30 +13,12 @@ class Buildetwork(object):
         self.sheet_bridge_domain = 'bridge_domain'
         self.sheet_bd_subnet = 'bd_subnet'
         self.sheet_bd_l3out = 'bd_l3out'
+        self.xl_file = ExcelImporter().import_excelfile()
 
-
-
-    def prettify(self,elem):
-        """Return a pretty-printed XML string for the Element.
-        """
-        rough_string = ElementTree.tostring(elem, 'utf-8')
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ")
-
-    def import_excelfile(self):
-        self.filename = filedialog.askopenfile(parent=root, initialdir=os.getcwd(),
-                                               title="Please select a file:")
-        xlsx = pd.ExcelFile(self.filename.name)
-        print(self.filename.name)
-        #df = pd.read_excel(xlsx,sheet_name='end_point_group')
-        #for index, row in df.iterrows():
-        #    if row['description'] == 'POB CONTAINER MANAGEMENT - TEST':
-        #        print(row['description'])
-        return xlsx
 
     def create_bridge_domain(self):
         # Bridge SpreadSheet
-        excel_file = Buildetwork().import_excelfile()
+        excel_file = self.xl_file
         bridge_domain_sheet = pd.read_excel(excel_file,sheet_name=self.sheet_bridge_domain)
         bd_subnet_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_bd_subnet)
         bd_l3out_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_bd_l3out)
@@ -88,7 +66,7 @@ class Buildetwork(object):
                                 fvRsBDToOut = SubElement(fvBD, 'fvRsBDToOut', {'tnL3extOutName':row_l3['l3out_name']})
             results.append(root)
         for result in results:
-            print(Buildetwork().prettify(result))
+            print(ExcelImporter().prettify(result))
         return results
 
     def generate_xml_files(self):
