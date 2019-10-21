@@ -17,13 +17,17 @@ class Buildetwork(object):
         self.sheet_epg = 'end_point_group'
         self.sheet_epg_subnet = 'epg_subnet'
         self.sheet_epg_domain_ass = 'epg_domain_association'
+
+    
+    def get_excel_file(self):
         self.xl_file = ExcelImporter().import_excelfile()
+        return self.xl_file
 
 
 
-    def create_bridge_domain(self):
+    def create_bridge_domain(self,xl_file):
         # Bridge SpreadSheet
-        excel_file = self.xl_file
+        excel_file = xl_file
         bridge_domain_sheet = pd.read_excel(excel_file,sheet_name=self.sheet_bridge_domain)
         bd_subnet_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_bd_subnet)
         bd_l3out_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_bd_l3out)
@@ -77,9 +81,9 @@ class Buildetwork(object):
         pass
 
 
-    def create_contract(self):
+    def create_contract(self,xl_file):
         # contract SpreadSheet
-        excel_file = Buildetwork().import_excelfile()
+        excel_file = xl_file
         contract_sheet = pd.read_excel(excel_file,sheet_name=self.sheet_contract)
         set_of_tenants = set()
         results = []
@@ -109,15 +113,15 @@ class Buildetwork(object):
                                                                   'targetDscp':'unspecified'})
             results.append(root)
         for result in results:
-            print(Buildetwork().prettify(result))
+            print(ExcelImporter().prettify(result))
 
      
         return results
 
 
-    def create_epg(self):
+    def create_epg(self,xl_file):
         # Bridge SpreadSheet
-        excel_file = Buildetwork().import_excelfile()
+        excel_file = xl_file
         epg_sheet = pd.read_excel(excel_file,sheet_name=self.sheet_epg)
         epg_subnet_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_epg_subnet)
         epg_domain_ass_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_epg_domain_ass)
@@ -173,15 +177,18 @@ class Buildetwork(object):
                                                                     'status':'','tDn':epg_phy_tDN})
             results.append(root)
         for result in results:
-            print(Buildetwork().prettify(result))
+            print(ExcelImporter().prettify(result))
         return results
     
+    def call_all_aci_elements(self):
+        xl_file = Buildetwork().get_excel_file()
+        
+        Buildetwork().create_bridge_domain(xl_file)
+        Buildetwork().create_contract(xl_file)
+        Buildetwork().create_epg(xl_file)
 
-#Buildetwork().create_bridge_domain()
 
-#Buildetwork().create_contract()
-
-Buildetwork().create_epg()
+Buildetwork().call_all_aci_elements()
 
 
 
