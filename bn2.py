@@ -17,7 +17,7 @@ class Buildetwork(object):
         self.sheet_epg = 'end_point_group'
         self.sheet_epg_subnet = 'epg_subnet'
         self.sheet_epg_domain_ass = 'epg_domain_association'
-======= self.xl_file = ExcelImporter().import_excelfile()
+        self.xl_file = ExcelImporter().import_excelfile()
 
 
 
