@@ -1,10 +1,4 @@
+  
 env
 .env
-output1.xml
-output2.xml
-output3.xml
-output4.xml
-output5.xml
-output6.xml
-output7.xml
-output8.xml
+aci_build_input_data_redbee_prod_wp_v1_17.xlsx
