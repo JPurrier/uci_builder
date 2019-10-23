@@ -190,7 +190,8 @@ class Buildetwork(object):
     def create_epg_stat_bnd(self,xl_file):
         # Bridge SpreadSheet
         excel_file = xl_file
-        epg_stat_bnd_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_stat_bnd)
+        raw_epg_stat_bnd_sheet = pd.read_excel(excel_file, sheet_name=self.sheet_stat_bnd)
+        epg_stat_bnd_sheet = raw_epg_stat_bnd_sheet.sort_values(by=['tenant', 'app_profile'])
         set_of_tenants = set()
         set_of_AppProf = []
         epg_encap = ''
