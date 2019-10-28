@@ -370,9 +370,6 @@ class Buildetwork(object):
                             list_of_subject.append(line_of_sbj)
                     else:
                         continue
-
-
-
                 #for lst_sbj in set_of_subject:
                 #    for index, sbjct2 in subject_sheet.iterrows():
                 #        line_of_sbj = []
@@ -382,15 +379,8 @@ class Buildetwork(object):
                 #            #print('line_of_sbj',tenant,contr_sbj,lst_sbj,line_of_sbj)
                 #            list_of_subject.append(line_of_sbj)
                 #            break
-                
-                        
                 list_of_subject.sort()    
-                print('list of subjects',tenant,contr_sbj,list_of_subject)
-
-                
-                #    while set_of_subject.len():
-
-
+                #print('list of subjects',tenant,contr_sbj,list_of_subject)
                 for sbj_sbj in list_of_subject:
                     vzSubj = SubElement(vzBrCP,'vzSubj',{'consMatchT':'AtleastOne','descr':sbj_sbj[1],
                                                                'name':sbj_sbj[0],'nameAlias':'','prio':'unspecified',
